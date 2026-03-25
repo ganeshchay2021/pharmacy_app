@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_app/controller/route_controller.dart';
+import 'package:pharmacy_app/controller/auth_controller.dart';
+import 'package:pharmacy_app/routes/app_routes.dart';
 import 'package:pharmacy_app/utils/constants.dart';
 import 'package:pharmacy_app/utils/text_style_widget.dart';
 import 'package:pharmacy_app/widgets/category.dart';
@@ -9,8 +10,9 @@ import 'package:pharmacy_app/widgets/medicine_list.dart';
 import 'package:pharmacy_app/widgets/search_field.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  HomeView({super.key});
 
+  final authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,37 +25,42 @@ class HomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //user image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(60),
-                child: Image.asset(
-                  Constants.user,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
+              GestureDetector(
+                onTap: () {
+                  Get.offNamedUntil(AppRoutes.login, (route) => false);
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: Image.asset(
+                    Constants.user,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-      
+
               Gap(Constants.spaceBwtItems),
-      
+
               //heading text
               Text(
                 "Your Trusted",
                 style: TextStyleWidget.headlineTextStyle(20),
               ),
-      
+
               //light text
               Text(
                 "Online Pharmacy",
                 style: TextStyleWidget.lightTextStyle(22),
               ),
-      
+
               Gap(Constants.spaceBwtSections),
-      
+
               //search field
               SearchField(),
-      
+
               Gap(Constants.spaceBwtSections),
-      
+
               //categories list
               Obx(
                 () => SizedBox(
@@ -65,13 +72,11 @@ class HomeView extends StatelessWidget {
                     ) {
                       return GestureDetector(
                         onTap: () {
-                          Get.find<RouteController>().selectedIndex.value =
-                              index;
+                          authController.selectedIndex.value = index;
                         },
                         child: Category(
                           title: Constants.categoriesList[index],
-                          selectedIndex:
-                              Get.find<RouteController>().selectedIndex.value,
+                          selectedIndex: authController.selectedIndex.value,
                           index: index,
                         ),
                       );
@@ -79,9 +84,9 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
               ),
-      
+
               Gap(Constants.spaceBwtSections),
-      
+
               //medicines list
               MedicineList(
                 onTap: () {
@@ -103,9 +108,6 @@ class HomeView extends StatelessWidget {
                   Get.toNamed("/product");
                 },
               ),
-      
-              
-      
             ],
           ),
         ),

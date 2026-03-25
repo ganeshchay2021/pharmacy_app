@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
-import 'package:pharmacy_app/controller/route_controller.dart';
+import 'package:pharmacy_app/controller/auth_controller.dart';
 
-class ControllerBindings extends Bindings{
+class ControllerBindings extends Bindings {
   @override
   void dependencies() {
-    //route controller
-    Get.put<RouteController>(RouteController(), permanent: true);
+    Get.put<AuthController>(AuthController(), permanent: true);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Constants {
+
+  //spacing
   static double spaceBwtItems = 16.0;
   static double spaceBwtSections = 24.0;
 

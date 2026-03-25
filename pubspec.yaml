@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -41,6 +42,12 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_overlay_loader: ^2.0.0
   carousel_slider: ^5.1.2
+  firebase_core: ^4.6.0
+  cloud_firestore: ^6.2.0
+  firebase_auth: ^6.3.0
+  shared_preferences: ^2.5.4
+  random_string: ^2.3.1
+ 
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +98,16 @@ flutter:
         - asset: fonts/Poppins-SemiBold.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+    - family: Fredoka-Bold
+      fonts:
+        - asset: fonts/Fredoka-Bold.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+    - family: Fredoka-Light
+      fonts:
+        - asset: fonts/Fredoka-Light.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
