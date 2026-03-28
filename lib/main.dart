@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/admin/admin_login_view.dart';
 import 'package:pharmacy_app/bindings/controller_bindings.dart';
 import 'package:pharmacy_app/routes/app_pages.dart';
-import 'package:pharmacy_app/view/login_view.dart';
-
+import 'package:pharmacy_app/view/botton_nav.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       initialBinding: ControllerBindings(),
       getPages: AppPages.routes,
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-      home: LoginView(),
+      home: BottonNav(),
     );
   }
 }
