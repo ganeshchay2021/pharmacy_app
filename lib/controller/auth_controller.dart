@@ -2,14 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/controller/product_controller.dart';
 import 'package:pharmacy_app/routes/app_routes.dart';
 import 'package:pharmacy_app/services/databases.dart';
 import 'package:pharmacy_app/services/shared_preferences_helper.dart';
-import 'package:random_string/random_string.dart';
+import 'package:pharmacy_app/utils/constants.dart';
+import 'package:pharmacy_app/widgets/common_snackbar.dart';
 
 class AuthController extends GetxController {
   RxInt selectedIndex = 0.obs;
-  
+
   RxBool showPassword = true.obs;
 
   void togglePassword() {
@@ -31,11 +33,11 @@ class AuthController extends GetxController {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-            email: signUpEmailController.text,
-            password: signUpPasswordController.text,
+            email: signUpEmailController.text.trim(),
+            password: signUpPasswordController.text.trim(),
           );
 
-      String id = randomAlphaNumeric(10);
+      String id = userCredential.user!.uid;
 
       Map<String, dynamic> userInfoMap = {
         "Name": signUpNameController.text,
@@ -55,27 +57,15 @@ class AuthController extends GetxController {
       signUpNameController.clear();
       signUpPasswordController.clear();
 
-      if (!Get.isSnackbarOpen) {
-        Get.snackbar(
-          "",
-          "",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          titleText: const Text(
-            "Success",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          messageText: Text(
-            "User Registered Successfully!",
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-          ),
-        );
-      }
-      Get.offNamed(AppRoutes.home);
+      //success message
+      snackBar(
+        msgType: "Succuess",
+        message: "User register Successfully",
+        color: Colors.green,
+      );
+
+      //to go bottom nav bar
+      Get.offNamedUntil(AppRoutes.bottomNavBar, (route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         if (!Get.isSnackbarOpen) {
@@ -152,9 +142,8 @@ class AuthController extends GetxController {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      String uid = userCredential.user!.uid;
 
-      debugPrint("USer Id :--$uid)");
+      String uid = userCredential.user!.uid;
 
       DocumentSnapshot userDoc = await DatabasesMethods().getUser(uid);
 
@@ -166,31 +155,21 @@ class AuthController extends GetxController {
         await SharedPreferencesHelper().saveUserName(data['Name'] ?? "");
         await SharedPreferencesHelper().saveUserEmail(data['Email'] ?? "");
       }
+
       loginEmailController.clear();
       loginPasswordController.clear();
 
-      if (!Get.isSnackbarOpen) {
-        Get.snackbar(
-          "",
-          "",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          titleText: const Text(
-            "Success",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          messageText: Text(
-            "Login Successfully",
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-          ),
-        );
-      }
+      snackBar(
+        msgType: "Success",
+        message: "Login Successfully!",
+        color: Colors.green,
+      );
+      //getting all medicine
+      ProductController productController = Get.find<ProductController>();
+      productController.getProduct(category: Constants.categoriesList[0]);
 
-      Get.offNamed(AppRoutes.home);
+      //route to home page
+      Get.offNamedUntil(AppRoutes.bottomNavBar, (route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
         if (!Get.isSnackbarOpen) {
@@ -238,6 +217,42 @@ class AuthController extends GetxController {
           );
         }
       }
+    }
+  }
+
+  Future<void> adminLogin() async {
+    try {
+      await FirebaseFirestore.instance.collection("Admin").get().then((
+        snapshot,
+      ) {
+        snapshot.docs.forEach((result) {
+          if (result.data()['Id'] != loginEmailController.text.trim()) {
+            snackBar(
+              msgType: "Error",
+              message: "Incorrect username",
+              color: Colors.red,
+            );
+          } else if (result.data()['Password'] !=
+              loginPasswordController.text.trim()) {
+            snackBar(
+              msgType: "Error",
+              message: "Incorrect password",
+              color: Colors.red,
+            );
+          } else {
+            Get.offNamedUntil(AppRoutes.adminDashboard, (route) => false);
+            loginEmailController.clear();
+            loginPasswordController.clear();
+            snackBar(
+              msgType: "Success",
+              message: "Login Successfully",
+              color: Colors.green,
+            );
+          }
+        });
+      });
+    } on FirebaseAuthException catch (e) {
+      snackBar(msgType: "Warning", message: e.toString(), color: Colors.red);
     }
   }
 
