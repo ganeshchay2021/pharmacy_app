@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/controller/auth_controller.dart';
+import 'package:pharmacy_app/controller/product_controller.dart';
 import 'package:pharmacy_app/routes/app_routes.dart';
 import 'package:pharmacy_app/utils/constants.dart';
 import 'package:pharmacy_app/utils/text_style_widget.dart';
@@ -9,10 +11,23 @@ import 'package:pharmacy_app/widgets/category.dart';
 import 'package:pharmacy_app/widgets/medicine_list.dart';
 import 'package:pharmacy_app/widgets/search_field.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   final authController = Get.find<AuthController>();
+  final productController = Get.find<ProductController>();
+
+  @override
+  void initState() {
+    productController.getProduct(category: Constants.categoriesList[0]);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +41,11 @@ class HomeView extends StatelessWidget {
             children: [
               //user image
               GestureDetector(
-                onTap: () {
-                  Get.offNamedUntil(AppRoutes.login, (route) => false);
+                onTap: () async {
+                  // Get.offNamedUntil(AppRoutes.login, (route) => false);
+                  // final String? email = await SharedPreferencesHelper()
+                  //     .getUserEmail();
+                  // debugPrint("Email :------- $email");
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(60),
@@ -73,6 +91,9 @@ class HomeView extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           authController.selectedIndex.value = index;
+                          productController.getProduct(
+                            category: Constants.categoriesList[index],
+                          );
                         },
                         child: Category(
                           title: Constants.categoriesList[index],
@@ -87,26 +108,33 @@ class HomeView extends StatelessWidget {
 
               Gap(Constants.spaceBwtSections),
 
-              //medicines list
-              MedicineList(
-                onTap: () {
-                  // Handle medicine tap
-                  Get.toNamed("/product");
-                },
-              ),
-
-              MedicineList(
-                onTap: () {
-                  // Handle medicine tap
-                  Get.toNamed("/product");
-                },
-              ),
-
-              MedicineList(
-                onTap: () {
-                  // Handle medicine tap
-                  Get.toNamed("/product");
-                },
+              Obx(
+                () => StreamBuilder(
+                  stream: productController.allProducts.value,
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          //passing the actual data to your MedicineList here
+                          DocumentSnapshot doc = snapshot.data.docs[index];
+                          return MedicineList(
+                            productData: doc.data() as Map<String, dynamic>,
+                            onTap: () {
+                              // Handle medicine tap
+                              Get.toNamed(AppRoutes.product);
+                            },
+                          );
+                        },
+                      );
+                    } else {
+                     return  Center(child: Text("No any medicine found"));
+                    }
+                  },
+                ),
               ),
             ],
           ),

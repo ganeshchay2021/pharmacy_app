@@ -122,8 +122,6 @@ class LoginView extends GetView<AuthController> {
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return "Please enter your password";
-                            } else if (value.length < 6) {
-                              return "Password must be at least 6 characters";
                             }
                             return null;
                           },
@@ -187,7 +185,7 @@ class LoginView extends GetView<AuthController> {
                             //clearing the textfield
                             controller.loginEmailController.clear();
                             controller.loginPasswordController.clear();
-                            
+
                             controller.showPassword.value = true;
 
                             //navigate to sign up page
