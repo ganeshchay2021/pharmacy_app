@@ -13,4 +13,13 @@ class AppRoutes {
 
   //product details page route
   static final String product = "/product";
+
+  //admin login page route
+  static final String adminLogin = "/adminLogin";
+
+    //admin dashboard page route
+  static final String adminDashboard = "/adminDashboard";
+
+  //Botton Nav Bar route
+  static final String bottomNavBar = "/bottomNavBar";
 }
