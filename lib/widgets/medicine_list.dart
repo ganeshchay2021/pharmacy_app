@@ -3,8 +3,14 @@ import 'package:pharmacy_app/utils/constants.dart';
 import 'package:pharmacy_app/utils/text_style_widget.dart';
 
 class MedicineList extends StatelessWidget {
+  final Map<String, dynamic> productData;
   final VoidCallback onTap;
-  const MedicineList({super.key, required this.onTap});
+
+  const MedicineList({
+    super.key,
+    required this.onTap,
+    required this.productData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +71,7 @@ class MedicineList extends StatelessWidget {
                         children: [
                           // medicine name
                           Text(
-                            "Paracetamol",
+                            productData["Product Name"],
                             style: TextStyleWidget.headlineTextStyle(
                               18,
                             ).copyWith(color: Colors.white),
@@ -75,7 +81,7 @@ class MedicineList extends StatelessWidget {
 
                           //medicine price
                           Text(
-                            "\$90",
+                            "रु ${productData["Product Price"]}",
                             style: TextStyleWidget.headlineTextStyle(
                               18,
                             ).copyWith(color: Colors.white),
@@ -85,7 +91,7 @@ class MedicineList extends StatelessWidget {
 
                       //medicine company
                       Text(
-                        "apollo",
+                        productData["Company Name"],
                         style: TextStyleWidget.headlineTextStyle(
                           18,
                         ).copyWith(color: Colors.white),
