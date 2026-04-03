@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy_app/model/product_model.dart';
 import 'package:pharmacy_app/utils/constants.dart';
 import 'package:pharmacy_app/utils/text_style_widget.dart';
 
 class MedicineList extends StatelessWidget {
-  final Map<String, dynamic> productData;
+  final ProductModel productData;
   final VoidCallback onTap;
 
   const MedicineList({
@@ -70,18 +71,20 @@ class MedicineList extends StatelessWidget {
                       Row(
                         children: [
                           // medicine name
-                          Text(
-                            productData["Product Name"],
-                            style: TextStyleWidget.headlineTextStyle(
-                              18,
-                            ).copyWith(color: Colors.white),
+                          Expanded(
+                            child: Text(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              productData.name!,
+                              style: TextStyleWidget.headlineTextStyle(
+                                18,
+                              ).copyWith(color: Colors.white),
+                            ),
                           ),
-
-                          Spacer(),
 
                           //medicine price
                           Text(
-                            "रु ${productData["Product Price"]}",
+                            "रु ${productData.price}",
                             style: TextStyleWidget.headlineTextStyle(
                               18,
                             ).copyWith(color: Colors.white),
@@ -91,7 +94,7 @@ class MedicineList extends StatelessWidget {
 
                       //medicine company
                       Text(
-                        productData["Company Name"],
+                        productData.companyName!,
                         style: TextStyleWidget.headlineTextStyle(
                           18,
                         ).copyWith(color: Colors.white),
