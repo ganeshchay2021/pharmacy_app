@@ -36,7 +36,7 @@ class SelectedCategoryWidgets extends GetView<AdminController> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                items: Constants.categoriesList
+                items: Constants.selectCategory
                     .map(
                       (item) =>
                           DropdownMenuItem(value: item, child: Text(item)),
