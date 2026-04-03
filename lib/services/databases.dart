@@ -22,10 +22,7 @@ class DatabasesMethods {
   }
 
   //Product Fetch from Firebase Database
-  Future<Stream<QuerySnapshot>> getProduct(String category) async {
-    return FirebaseFirestore.instance
-        .collection("Products")
-        .where("Product Category", isEqualTo: category)
-        .snapshots();
+  Stream<QuerySnapshot> getProduct() {
+    return FirebaseFirestore.instance.collection("Products").get().asStream();
   }
 }
