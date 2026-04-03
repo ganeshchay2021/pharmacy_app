@@ -68,6 +68,35 @@ class AdminDashBoardView extends GetView<AdminController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      //image uploader
+                      // Obx(
+                      //   () => GestureDetector(
+                      //     onTap: () {
+                      //       _showPicker(context);
+                      //     },
+                      //     child: Container(
+                      //       height: size.height * 0.2,
+                      //       width: size.width,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.white,
+                      //         borderRadius: BorderRadius.circular(15),
+                      //         border: Border.all(color: Color(0xfff7bc3c)),
+                      //       ),
+                      //       child: controller.image.value != null
+                      //           ? ClipRRect(
+                      //             borderRadius: BorderRadius.circular(15),
+                      //               child: Image.file(
+                      //                 controller.image.value!,
+                      //                 fit: BoxFit.cover,
+                      //               ),
+                      //             )
+                      //           : Icon(Icons.camera_alt),
+                      //     ),
+                      //   ),
+                      // ),
+
+                      // Gap(Constants.spaceBwtItems),
+
                       //product name text field
                       CommonTextField(
                         validator: (value) {
@@ -138,6 +167,8 @@ class AdminDashBoardView extends GetView<AdminController> {
                       ),
 
                       Gap(Constants.spaceBwtItems * 2),
+
+                      //add product button
                       CommonButton(
                         text: "Add Product",
                         onTap: () async {
@@ -147,8 +178,12 @@ class AdminDashBoardView extends GetView<AdminController> {
                               await controller.addProduct();
                               Loader.hide();
                             }
-                          }else{
-                            snackBar(msgType: "Warning", message: "Select Category", color: Colors.red);
+                          } else {
+                            snackBar(
+                              msgType: "Warning",
+                              message: "Select Category",
+                              color: Colors.red,
+                            );
                           }
                         },
                       ),
@@ -162,4 +197,43 @@ class AdminDashBoardView extends GetView<AdminController> {
       ),
     );
   }
+
+  // void _showPicker(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     backgroundColor: Colors.white,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       return SafeArea(
+  //         child: Wrap(
+  //           children: <Widget>[
+  //             ListTile(
+  //               leading: const Icon(Icons.photo_library),
+  //               title: const Text('Choose from Gallery'),
+  //               onTap: () async {
+  //                 Loader.show(context);
+  //                 await controller.pickGalleryImage();
+  //                 Get.back();
+  //                 Loader.hide();
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: const Icon(Icons.camera_alt),
+  //               title: const Text('Open Camera'),
+  //               onTap: () async {
+  //                 Loader.show(context);
+  //                 await controller.pickCameraImage();
+  //                 Get.back();
+  //                 Loader.hide();
+  //               },
+  //             ),
+  //             const SizedBox(height: 20), // Bottom padding
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }

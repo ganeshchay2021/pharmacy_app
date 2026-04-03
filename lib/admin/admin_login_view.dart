@@ -18,150 +18,166 @@ class AdminLoginView extends GetView<AuthController> {
     //get the size of the screen
     final size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SizedBox(
-          child: Stack(
-            children: [
-              //top container
-              Container(
-                height: size.height / 2,
-                width: size.width,
-                decoration: BoxDecoration(
-                  color: Color(0xfff7bc3c),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(60),
-                    bottomRight: Radius.circular(60),
+    return PopScope(
+      onPopInvoked: (didPop) {
+        //reset the form state
+        _formKey.currentState?.reset();
+
+        //clearing the textfield
+        controller.loginEmailController.clear();
+        controller.loginPasswordController.clear();
+
+        controller.showPassword.value = true;
+
+        //handle back to login page
+        Get.back();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: SizedBox(
+            child: Stack(
+              children: [
+                //top container
+                Container(
+                  height: size.height / 2,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    color: Color(0xfff7bc3c),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(60),
+                      bottomRight: Radius.circular(60),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Gap(Constants.spaceBwtSections * 1.5),
+                      //title text
+                      Text(
+                        "Admin Login",
+                        style: TextStyleWidget.headlineTextStyle(
+                          50,
+                        ).copyWith(fontFamily: "Fredoka-Bold", height: 0),
+                      ),
+
+                      Gap(Constants.spaceBwtItems),
+
+                      //sub title text
+                      Text(
+                        "Manage Complete App",
+                        style: TextStyleWidget.headlineTextStyle(35).copyWith(
+                          fontFamily: "Fredoka-light",
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Gap(Constants.spaceBwtSections * 1.5),
-                    //title text
-                    Text(
-                      "Admin Login",
-                      style: TextStyleWidget.headlineTextStyle(
-                        50,
-                      ).copyWith(fontFamily: "Fredoka-Bold", height: 0),
-                    ),
 
-                    Gap(Constants.spaceBwtItems),
+                Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUnfocus,
+                  child: Obx(
+                    () => Container(
+                      padding: EdgeInsets.all(20),
+                      width: size.width,
+                      margin: EdgeInsets.only(
+                        top: size.height / 3.8,
+                        left: 20,
+                        right: 20,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 240, 247, 234),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Column(
+                        children: [
+                          Gap(Constants.spaceBwtSections / 2),
 
-                    //sub title text
-                    Text(
-                      "Manage Complete App",
-                      style: TextStyleWidget.headlineTextStyle(
-                        35,
-                      ).copyWith(fontFamily: "Fredoka-light", letterSpacing: 0),
-                    ),
-                  ],
-                ),
-              ),
-
-              Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUnfocus,
-                child: Obx(
-                  () => Container(
-                    padding: EdgeInsets.all(20),
-                    width: size.width,
-                    margin: EdgeInsets.only(
-                      top: size.height / 3.8,
-                      left: 20,
-                      right: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 240, 247, 234),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      children: [
-                        Gap(Constants.spaceBwtSections / 2),
-
-                        //title text
-                        Text(
-                          "Unique ID",
-                          style: TextStyleWidget.headlineTextStyle(
-                            35,
-                          ).copyWith(fontFamily: "Fredoka-Bold"),
-                        ),
-
-                        Gap(Constants.spaceBwtItems / 2),
-
-                        //sub title text
-                        Text(
-                          "Sign in to access your dashboard and continue",
-                          textAlign: TextAlign.center,
-                          style: TextStyleWidget.lightTextStyle(
-                            20,
-                          ).copyWith(fontFamily: "Fredoka-Light", height: 0),
-                        ),
-
-                        Gap(Constants.spaceBwtSections),
-
-                        //email text field
-                        CommonTextField(
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Please enter your username";
-                            }
-                            return null;
-                          },
-                          controller: controller.loginEmailController,
-                          keyboardType: TextInputType.emailAddress,
-                          label: "Username",
-                          hintText: "Enter your username",
-                          prefixIcon: Icon(Icons.person_3),
-                        ),
-
-                        Gap(Constants.spaceBwtSections),
-
-                        //password text field
-                        CommonTextField(
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Please enter your password";
-                            }
-                            return null;
-                          },
-                          controller: controller.loginPasswordController,
-                          keyboardType: TextInputType.text,
-                          label: "Password",
-                          hintText: "Enter your password",
-                          prefixIcon: Icon(Icons.lock_outlined),
-                          obscureText: controller.showPassword.value,
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              controller.togglePassword();
-                              debugPrint("${controller.showPassword.value}");
-                            },
-                            icon: controller.showPassword.value
-                                ? Icon(Icons.visibility)
-                                : Icon(Icons.visibility_off),
+                          //title text
+                          Text(
+                            "Unique ID",
+                            style: TextStyleWidget.headlineTextStyle(
+                              35,
+                            ).copyWith(fontFamily: "Fredoka-Bold"),
                           ),
-                        ),
 
-                        Gap(Constants.spaceBwtItems * 2),
+                          Gap(Constants.spaceBwtItems / 2),
 
-                        //login button
-                        CommonButton(
-                          text: "Login",
-                          onTap: () async {
-                            if (_formKey.currentState!.validate()) {
-                              Loader.show(context);
-                              await controller.adminLogin();
-                              Loader.hide();
-                            }
-                          },
-                        ),
+                          //sub title text
+                          Text(
+                            "Sign in to access your dashboard and continue",
+                            textAlign: TextAlign.center,
+                            style: TextStyleWidget.lightTextStyle(
+                              20,
+                            ).copyWith(fontFamily: "Fredoka-Light", height: 0),
+                          ),
 
-                        Gap(Constants.spaceBwtSections),
-                      ],
+                          Gap(Constants.spaceBwtSections),
+
+                          //email text field
+                          CommonTextField(
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Please enter your username";
+                              }
+                              return null;
+                            },
+                            controller: controller.loginEmailController,
+                            keyboardType: TextInputType.emailAddress,
+                            label: "Username",
+                            hintText: "Enter your username",
+                            prefixIcon: Icon(Icons.person_3),
+                          ),
+
+                          Gap(Constants.spaceBwtSections),
+
+                          //password text field
+                          CommonTextField(
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Please enter your password";
+                              }
+                              return null;
+                            },
+                            controller: controller.loginPasswordController,
+                            keyboardType: TextInputType.text,
+                            label: "Password",
+                            hintText: "Enter your password",
+                            prefixIcon: Icon(Icons.lock_outlined),
+                            obscureText: controller.showPassword.value,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                controller.togglePassword();
+                                debugPrint("${controller.showPassword.value}");
+                              },
+                              icon: controller.showPassword.value
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off),
+                            ),
+                          ),
+
+                          Gap(Constants.spaceBwtItems * 2),
+
+                          //login button
+                          CommonButton(
+                            text: "Login",
+                            onTap: () async {
+                              if (_formKey.currentState!.validate()) {
+                                Loader.show(context);
+                                await controller.adminLogin();
+                                Loader.hide();
+                              }
+                            },
+                          ),
+
+                          Gap(Constants.spaceBwtSections),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
