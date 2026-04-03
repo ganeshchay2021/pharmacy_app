@@ -6,7 +6,6 @@ import 'package:pharmacy_app/controller/product_controller.dart';
 import 'package:pharmacy_app/routes/app_routes.dart';
 import 'package:pharmacy_app/services/databases.dart';
 import 'package:pharmacy_app/services/shared_preferences_helper.dart';
-import 'package:pharmacy_app/utils/constants.dart';
 import 'package:pharmacy_app/widgets/common_snackbar.dart';
 
 class AuthController extends GetxController {
@@ -166,7 +165,7 @@ class AuthController extends GetxController {
       );
       //getting all medicine
       ProductController productController = Get.find<ProductController>();
-      productController.getProduct(category: Constants.categoriesList[0]);
+      productController.getProduct();
 
       //route to home page
       Get.offNamedUntil(AppRoutes.bottomNavBar, (route) => false);
