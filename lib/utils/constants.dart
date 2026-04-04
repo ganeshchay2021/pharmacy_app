@@ -11,7 +11,7 @@ class Constants {
   //images
   static String user = "assets/girl.jpg";
   static String medicine1 = "assets/med1.png";
-  static String wallet="assets/wallet.png";
+  static String wallet = "assets/wallet.png";
 
   //categories list
   static List<String> categoriesList = [
@@ -23,4 +23,8 @@ class Constants {
 
   //category
   static List<String> selectCategory = ["Supliments", "Vitamins", "Herbal"];
+
+  //esewa client id and secret key
+  String clientId = "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R";
+  String secretKey = "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==";
 }

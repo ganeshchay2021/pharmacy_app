@@ -198,6 +198,44 @@ class LoginView extends GetView<AuthController> {
                             ).copyWith(fontWeight: FontWeight.w500),
                           ),
                         ),
+
+                        Gap(Constants.spaceBwtSections),
+
+                        //create new account text
+                        GestureDetector(
+                          onTap: () {
+                            //reset the form state
+                            _formKey.currentState?.reset();
+
+                            //clearing the textfield
+                            controller.loginEmailController.clear();
+                            controller.loginPasswordController.clear();
+
+                            controller.showPassword.value = true;
+
+                            //navigate to sign up page
+                            Get.toNamed(AppRoutes.adminLogin);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.blue,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            child: Text(
+                              "Admin Login",
+                              style: TextStyleWidget.lightTextStyle(16)
+                                  .copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        Gap(Constants.spaceBwtItems),
                       ],
                     ),
                   ),

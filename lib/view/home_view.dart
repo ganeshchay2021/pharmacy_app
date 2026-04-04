@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -21,12 +20,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final authController = Get.find<AuthController>();
   final productController = Get.find<ProductController>();
-
-  @override
-  void initState() {
-    productController.getProduct(category: Constants.categoriesList[0]);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +84,6 @@ class _HomeViewState extends State<HomeView> {
                       return GestureDetector(
                         onTap: () {
                           authController.selectedIndex.value = index;
-                          productController.getProduct(
-                            category: Constants.categoriesList[index],
-                          );
                         },
                         child: Category(
                           title: Constants.categoriesList[index],
@@ -108,34 +98,29 @@ class _HomeViewState extends State<HomeView> {
 
               Gap(Constants.spaceBwtSections),
 
-              Obx(
-                () => StreamBuilder(
-                  stream: productController.allProducts.value,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          //passing the actual data to your MedicineList here
-                          DocumentSnapshot doc = snapshot.data.docs[index];
-                          return MedicineList(
-                            productData: doc.data() as Map<String, dynamic>,
-                            onTap: () {
-                              // Handle medicine tap
-                              Get.toNamed(AppRoutes.product);
-                            },
-                          );
+              Obx(() {
+                if (productController.allProducts.isNotEmpty) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemCount: productController.filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      //passing the actual data to your MedicineList here
+                      final doc = productController.filteredProducts[index];
+                      return MedicineList(
+                        productData: doc,
+                        onTap: () {
+                          // Handle medicine tap
+                          Get.toNamed(AppRoutes.product, arguments: doc);
                         },
                       );
-                    } else {
-                     return  Center(child: Text("No any medicine found"));
-                    }
-                  },
-                ),
-              ),
+                    },
+                  );
+                } else {
+                  return Center(child: Text("No any medicine found"));
+                }
+              }),
             ],
           ),
         ),

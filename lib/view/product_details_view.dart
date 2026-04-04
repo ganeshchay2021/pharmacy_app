@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/model/product_model.dart';
 import 'package:pharmacy_app/utils/constants.dart';
 import 'package:pharmacy_app/utils/text_style_widget.dart';
 
@@ -9,6 +10,7 @@ class ProductDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProductModel doc = Get.arguments;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -71,12 +73,16 @@ class ProductDetailsView extends StatelessWidget {
                           Row(
                             children: [
                               //medicine name
-                              Text(
-                                "Paracetamol",
-                                style: TextStyleWidget.headlineTextStyle(20),
+                              Expanded(
+                                child: Text(
+                                  "${doc.name}",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyleWidget.headlineTextStyle(18),
+                                ),
                               ),
 
-                              Spacer(),
+                              // Spacer(),
 
                               //quantity selector
                               Container(
@@ -121,12 +127,10 @@ class ProductDetailsView extends StatelessWidget {
                           Gap(Constants.spaceBwtItems),
 
                           //medicine description text
-                          Text(
-                            "MECHANISM OF ACTION : It is a weak inhibitor of PG synthesis and there is some evidence to indicate relative COX-2 selectivity. Antiinflammatory action may be exerted by other mechanisms as well, eg. reduced generation of superoxide by neutrophils, inhibition of PAF synthesis and TNF release, free radical scavanging, inhibition of metalloproteinase activity in cartilage.",
-                          ),
+                          Text("${doc.description}"),
 
                           Gap(Constants.spaceBwtItems),
-                        
+
                           //total price and order button
                           Container(
                             padding: EdgeInsets.all(10),
@@ -138,12 +142,10 @@ class ProductDetailsView extends StatelessWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-
                                 //total price
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-
                                     //total price text
                                     Text(
                                       "Total Price",
@@ -154,7 +156,7 @@ class ProductDetailsView extends StatelessWidget {
 
                                     //total price value
                                     Text(
-                                      "\$90.00",
+                                      "रु. ${doc.price}",
                                       style: TextStyleWidget.headlineTextStyle(
                                         18,
                                       ).copyWith(color: Colors.black),
@@ -168,11 +170,14 @@ class ProductDetailsView extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {},
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(30),
-                                      ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
                                     child: Text(
                                       "Order Now",
                                       style: TextStyleWidget.headlineTextStyle(

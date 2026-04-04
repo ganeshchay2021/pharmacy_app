@@ -5,7 +5,8 @@ import 'package:pharmacy_app/utils/text_style_widget.dart';
 class CommonButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
-  const CommonButton({super.key, required this.text, required this.onTap});
+  final double? height;
+  const CommonButton({super.key, required this.text, required this.onTap, this.height=55});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class CommonButton extends StatelessWidget {
         onTap: onTap,
         splashColor: Constants.backgrondColor.withOpacity(0.7),
         child: Ink(
-          height: 55,
+          height: height,
           width: double.infinity,
           decoration: BoxDecoration(
             color: Color(0xfff7bc3c),

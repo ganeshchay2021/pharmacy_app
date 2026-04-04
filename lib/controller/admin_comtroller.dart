@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -46,20 +44,6 @@ class AdminController extends GetxController {
   //add product to database
   Future<void> addProduct() async {
     try {
-      // Reference reference = FirebaseStorage.instance.ref().child(
-      //   "Medicine/${DateTime.now().microsecondsSinceEpoch}.png",
-      // );
-      // if (image.value != null) {
-      //   await reference.putFile(image.value!);
-      // }
-
-      // 2. Upload the file
-      // UploadTask uploadTask = reference.putFile(image.value!);
-
-      // 3. Wait for completion and get the URL
-      // TaskSnapshot snapshot = await uploadTask;
-      
-
       // 4. Create the map INCLUDING the image URL
       Map<String, dynamic> productInfoMap = {
         "Product Name": productNameController.text.trim(),

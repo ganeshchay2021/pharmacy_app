@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pharmacy_app"
+    namespace = ""
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
